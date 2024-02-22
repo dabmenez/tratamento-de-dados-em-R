@@ -1,4 +1,4 @@
-# Tratamento_de_dados_em_R
+# Tratamento de dados em R
 Atividade pratica para tratar os dados do arquivo 'tempo.csv em R
 
 -Aparência: sol,nublado,chuva
