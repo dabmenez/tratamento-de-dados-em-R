@@ -1,0 +1,90 @@
+---
+title: "Limpeza e tratamento de dados"
+output: html_notebook
+---
+
+---
+Formação Cientista de Dados
+Limpeza e Tratamento de Dados
+---
+Leitura dos dados
+```{r}
+# Importação de dados
+dados <- read.csv("Tempo.csv", sep = ";", na.strings = "", stringsAsFactors = TRUE)
+head(dados)
+summary(dados)
+```
+Exploração de Dados - Aparência, Vento, Jogar
+```{r}
+# Aparência
+counts_aparencia <- table(dados$Aparencia)
+counts_aparencia
+barplot(counts_aparencia, main="Aparencia", xlab="Aparencia")
+
+# Vento
+counts_vento <- table(dados$Vento)
+counts_vento
+barplot(counts_vento, main="Vento", xlab="Vento")
+
+# Jogar
+counts_jogar <- table(dados$Jogar)
+counts_jogar
+barplot(counts_jogar, main="Jogar", xlab="Jogar")
+```
+Exploração de Colunas Numéricas - Temperatura e Umidade
+
+```{r}
+# Temperatura
+summary(dados$Temperatura)
+boxplot(dados$Temperatura)
+hist(dados$Temperatura)
+```
+```{r}
+summary(dados$Umidade)
+boxplot(dados$Umidade)
+hist(dados$Umidade)
+```
+Valore faltantes
+```{r}
+#valores faltantes NAs
+dados_faltantes <- dados[!complete.cases(dados),]
+dados_faltantes
+```
+Tratamento da Variável "Aparencia"
+```{r}
+summary(dados$Aparencia)
+dados_na_aparencia <- dados[is.na(dados$Aparencia),]
+dados[dados$Aparencia == 'menos',]$Aparencia <- 'sol'
+summary(dados$Aparencia)
+dados$Aparencia <- factor(dados$Aparencia)
+summary(dados$Aparencia)
+```
+Tratamento da Variável "Temperatura"
+```{r}
+summary(dados$Temperatura)
+dados_anormais_temp <- dados[dados$Temperatura < -130 | dados$Temperatura > 130,]$Temperatura
+dados[is.na(dados$Temperatura),]
+mediana_temp <- median(dados$Temperatura)
+dados[dados$Temperatura < -135 | dados$Temperatura > 130,]$Temperatura <- mediana_temp
+dados[dados$Temperatura < -135 | dados$Temperatura > 130,]$Temperatura
+summary(dados$Temperatura)
+```
+Tratamento da Variável "Umidade"
+```{r}
+summary(dados$Umidade)
+dados_anormais_umidade <- dados[dados$Umidade < 0 | dados$Umidade > 100,]$Umidade
+dados[is.na(dados$Umidade),]
+mediana_umidade <- median(dados$Umidade, na.rm = TRUE)
+dados[is.na(dados$Umidade),]$Umidade <- mediana_umidade
+dados[dados$Umidade < 0 | dados$Umidade > 100,]$Umidade <- mediana_umidade
+dados[dados$Umidade < 0 | dados$Umidade > 100,]
+summary(dados$Umidade)
+```
+Tratamento da Variável "Vento"
+```{r}
+summary(dados$Vento)
+dados_na_vento <- dados[is.na(dados$Vento),]
+dados[is.na(dados$Vento),]$Vento <- 'FALSO'
+dados[is.na(dados$Vento),]
+summary(dados$Vento)
+```
